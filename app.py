@@ -8,18 +8,18 @@
 
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
-import keras.models
+from keras.models import load_model
 from PIL import Image
 import numpy as np
-import flask
+from flask import Flask,request,jsonify
 import io
 from flask_cors import CORS, cross_origin
 
 # initialize our Flask application and the Keras model
-app = flask.Flask(__name__)
+app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-model = keras.models.load_model("wts_model_v0.h5")
+model = load_model("wts_model_v0.h5")
 
 
 # def load_model():
@@ -62,10 +62,10 @@ def predict():
     data = {"success": False, "result": ""}
 
     # ensure an image was properly uploaded to our endpoint
-    if flask.request.method == "POST":
-        if flask.request.files.get("image"):
+    if request.method == "POST":
+        if request.files.get("image"):
             # read the image in PIL format
-            image = flask.request.files["image"].read()
+            image = request.files["image"].read()
             image = Image.open(io.BytesIO(image))
 
             # preprocess the image and prepare it for classification
@@ -84,7 +84,7 @@ def predict():
             data["success"] = True
             print(data)
     # return the data dictionary as a JSON response
-    return flask.jsonify(data)
+    return jsonify(data)
 
 
 # if this is the main thread of execution first load the model and
