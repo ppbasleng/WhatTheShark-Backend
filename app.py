@@ -19,16 +19,16 @@ from flask_cors import CORS, cross_origin
 app = flask.Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-model = None
+model = keras.models.load_model("wts_model_v0.h5")
 
 
-def load_model():
-    # load the pre-trained Keras model (here we are using a model
-    # pre-trained on ImageNet and provided by Keras, but you can
-    # substitute in your own networks just as easily)
-    global model
-    model = keras.models.load_model("wts_model_v0.h5")
-    # model = ResNet50(weights="imagenet")
+# def load_model():
+#     # load the pre-trained Keras model (here we are using a model
+#     # pre-trained on ImageNet and provided by Keras, but you can
+#     # substitute in your own networks just as easily)
+#     global model
+#     model = keras.models.load_model("wts_model_v0.h5")
+#     # model = ResNet50(weights="imagenet")
 
 
 def prepare_image(image, target):
@@ -92,5 +92,5 @@ def predict():
 if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
            "please wait until server has fully started"))
-    load_model()
+    # load_model()
     app.run()
