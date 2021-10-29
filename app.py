@@ -79,7 +79,7 @@ def predict():
 
             data["result"] = result
             data["success"] = True
-
+            print(data)
     # return the data dictionary as a JSON response
     return flask.jsonify(data)
 
