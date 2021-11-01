@@ -1,8 +1,8 @@
 # USAGE
-# Start the server:
-# 	python run_keras_server.py
+# Start the local server:
+# 	python app.py
 # Submit a request via cURL:
-# 	curl -X POST -F image=@dog.jpg 'http://localhost:5000/predict'
+# 	curl -X POST -F image=@testshark.jpg 'https://whattheshark-backend.herokuapp.com/predict'
 # Submita a request via Python:
 #	python simple_request.py
 
