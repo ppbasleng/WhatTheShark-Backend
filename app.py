@@ -52,10 +52,12 @@ def prepare_image(image, target):
     return image
 
 @app.route("/",methods=["GET"])
+@cross_origin
 def main():
     return "this is what the shark backend"
     
 @app.route("/predict", methods=["POST"])
+@cross_origin
 def predict():
     # initialize the data dictionary that will be returned from the
     # view
