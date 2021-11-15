@@ -11,13 +11,14 @@ from PIL import Image
 import numpy as np
 from flask import Flask,request,jsonify
 import io
+import gc
 from flask_cors import CORS, cross_origin
 
 # initialize our Flask application and the Keras model
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-model = None
+model = load_model("wts_model_v0.h5")
 
 
 
@@ -51,7 +52,7 @@ def predict():
     if request.method == "POST":
         if request.files.get("image"):
             # read the image in PIL format
-            model = load_model("wts_model_v0.h5")
+            
             image = request.files["image"].read()
             image = Image.open(io.BytesIO(image))
 
@@ -68,6 +69,7 @@ def predict():
             data["result"] = result
             data["success"] = True
             print(data)
+            gc.collect()
     # return the data dictionary as a JSON response
     return jsonify(data)
 
