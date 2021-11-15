@@ -17,7 +17,7 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-model = load_model("wts_model_v0.h5")
+model = None
 
 
 
@@ -25,7 +25,7 @@ def prepare_image(image, target):
     # if the image mode is not RGB, convert it
     if image.mode != "RGB":
         image = image.convert("RGB")
-
+    
     # resize the input image and preprocess it
     image = image.resize(target)
     image = np.array(image)
@@ -51,6 +51,7 @@ def predict():
     if request.method == "POST":
         if request.files.get("image"):
             # read the image in PIL format
+            model = load_model("wts_model_v0.h5")
             image = request.files["image"].read()
             image = Image.open(io.BytesIO(image))
 
