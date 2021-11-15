@@ -69,7 +69,7 @@ def predict():
             data["result"] = result
             data["success"] = True
             print(data)
-            gc.collect()
+            _ = gc.collect()
     # return the data dictionary as a JSON response
     return jsonify(data)
 
