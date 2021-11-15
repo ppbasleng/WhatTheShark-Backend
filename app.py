@@ -12,6 +12,7 @@ import numpy as np
 from flask import Flask,request,jsonify
 import io
 import gc
+import keras.backend as K
 from flask_cors import CORS, cross_origin
 
 # initialize our Flask application and the Keras model
@@ -69,7 +70,8 @@ def predict():
             data["result"] = result
             data["success"] = True
             print(data)
-            _ = gc.collect()
+            gc.collect()
+            K.clear_session()
     # return the data dictionary as a JSON response
     return jsonify(data)
 
