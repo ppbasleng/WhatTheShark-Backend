@@ -3,8 +3,6 @@
 # 	python app.py
 # Submit a request via cURL:
 # 	curl -X POST -F image=@testshark.jpg 'https://whattheshark-backend.herokuapp.com/predict'
-# Submita a request via Python:
-#	python simple_request.py
 
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
@@ -22,14 +20,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 model = load_model("wts_model_v0.h5")
 
 
-# def load_model():
-#     # load the pre-trained Keras model (here we are using a model
-#     # pre-trained on ImageNet and provided by Keras, but you can
-#     # substitute in your own networks just as easily)
-#     global model
-#     model = keras.models.load_model("wts_model_v0.h5")
-#     # model = ResNet50(weights="imagenet")
-
 
 def prepare_image(image, target):
     # if the image mode is not RGB, convert it
@@ -42,22 +32,16 @@ def prepare_image(image, target):
     image = image.astype('float32')
     image /= 255
     image = np.reshape(image ,(1,299,299,3))
-    # image = image.resize(target)
-    # image = img_to_array(image)
-    # image = np.expand_dims(image, axis=0)
-    # image = imagenet_utils.preprocess_input(image)
 
 
-    # return the processed image
+    # return the reshaped image
     return image
 
 @app.route("/",methods=["GET"])
-@cross_origin()
 def main():
-    return "this is what the shark backend"
+    return "What The Shark Backend/Deep Learning"
     
 @app.route("/predict", methods=["POST"])
-@cross_origin()
 def predict():
     # initialize the data dictionary that will be returned from the
     # view
@@ -73,14 +57,12 @@ def predict():
             # preprocess the image and prepare it for classification
             image = prepare_image(image, target=(299,299))
 
-            # classify the input image and then initialize the list
-            # of predictions to return to the client
-            # preds = model.predict(image)
-            # data["predictions"] = [preds]
             
-            predict = model.predict(image)
+            # prediction = model.predict(image)
+            # predict_on_batch() for prevent memory leak
+            prediction = model.predict_on_batch(image)
             label = ['bull', 'tiger', 'white']
-            result = label[np.argmax(predict)]
+            result = label[np.argmax(prediction)]
 
             data["result"] = result
             data["success"] = True
@@ -94,5 +76,4 @@ def predict():
 if __name__ == "__main__":
     print(("* Loading Keras model and Flask starting server..."
            "please wait until server has fully started"))
-    # load_model()
     app.run()
