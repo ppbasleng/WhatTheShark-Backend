@@ -63,7 +63,7 @@ def predict():
             
             # prediction = model.predict(image)
             # predict_on_batch() for prevent memory leak
-            prediction = model.predict_on_batch(image)
+            prediction = model.predict(image)
             label = ['bull', 'tiger', 'white']
             result = label[np.argmax(prediction)]
 
