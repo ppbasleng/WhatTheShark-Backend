@@ -19,7 +19,7 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-model = load_model("wts_model_v0.h5")
+model = load_model("wts_model_v1.h5")
 
 
 
